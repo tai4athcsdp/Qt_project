@@ -6,4 +6,11 @@ Window {
     height: 480
     visible: true
     title: qsTr("Hello World")
+
+    Text {
+        id: name
+        text: qsTr("Hello, I am Tai!")
+        font.pixelSize: 20
+        anchors.centerIn: parent
+    }
 }
