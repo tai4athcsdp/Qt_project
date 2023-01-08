@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls
+import Qt.labs.platform
 
 Window {
     id: root
@@ -25,6 +26,25 @@ Window {
             width: 100
             height: menuBar.height
             text: qsTr("Open")
+
+            onClicked: {
+                //open popup to choose file
+                openDialog.visible = true;
+            }
+
+            FileDialog {
+                id: openDialog
+                title: "Please choose a file"
+                folder: Controller.getCurrentDir();
+                onAccepted: {
+                    console.log("You chose: " + openDialog.currentFile)
+                    Controller.play(openDialog.currentFile);
+                }
+                onRejected: {
+                    console.log("Canceled")
+                }
+                visible: false
+            }
 
         }
     }
