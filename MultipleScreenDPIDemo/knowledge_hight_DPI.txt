@@ -1,0 +1,38 @@
+Màn hình High DPI (hay còn gọi là màn hình Retina) - là những màn hình
+có độ phân giải cao (pixels) liên quan tới kích thước vật lý (mm), kết quả 
+là 1 màn hình "high pixel density" hoặc có dots per inch cao. Sự tăng độ phân giải
+thường có công dụng cung cấp chi tiết hơn cho các content on screen (smooth text, more detailed icons),
+hơn là nhiều content hơn.
+
+Conceptual Model
+Qt sử dụng 1 model nơi mà hệ thống tọa độ của ứng dụng thì độc lập với 
+độ phân giải màn hình. Ứng dụng hoạt động trong device-indepentdent pixels,
+cái mà được mapped với physical pixels của màn hình thông qua 1 scale factor, hay
+còn gọi là device pixel ratio. Scale factor nà được biểu diễn bằng 1 số thực, ví dụ:
+1.0, 2.0....
+
+Ví dụ, tạo 1 QWindow hoặc QWidget, setting size cho nó là 200 * 200 sẽ chiếm
+200 * 200 display pixels trên các normal density display(with device pixel ratio = 1), nhưng 
+sẽ chiếm 400 * 400 pixels trên các màn high density display(với device pixel ratio = 2)
+
+Model này áp dụng cho hầu hết higher level Qt GUI, Widgets, QUick APIs bao gồm
+widget và item geometry, event geometry, desktop, window...
+
+Device Independent Screen Geometry
+Qt app thường hoạt động trong device independent pixels. Điều này bao gôm 
+tọa độ window và sceen của ứng dụng.
+
+Điều này có nghĩa rằng QScreen::geometry() sẽ ko trả về physical pixel
+
+https://felgo.com/doc/qt5/highdpi/
+
+ISSUES WITH HIGH DPI
+- App sử dụng UI design với fixed coordinate trông nhỏ. Sự kết hợp của font size in point và
+other size in pixel có vấn đề vì các points thì ko phụ thuộc vào monitor resolution.
+Ví dụ, 1 frame 40 * 20 pixels xung quanh text "hello" sử dụng 12pt font nhìn ok trên màn
+hình có độ phân giải thấp, tuy nhiên, frame sẽ nhỏ nếu sử dụng màn hình có DPI cao, 
+gây ra việc text sẽ bị clip
+- App phải adapt với các tình huống mà user có nhiều màn với các độ phân giải khác nhau.
+
+Phương pháp truyền thống hỗ trợ high DPI là Qt tự động điều chỉnh font, sau đó cung cấp 1 DPI value mà 
+app có thể sử dụng để scale phần còn lại của UI
