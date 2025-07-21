@@ -1,0 +1,108 @@
+===============================Qt Knowledge===========================================================
+1. QML Coding convention
+	- id
+	- custom property
+	- signal 
+	- JS function
+	- object properties
+	- child objects
+For better readability, separate these different parts with an empty line
+
+2. Cú pháp hanle signal kiểu mới giúp tường minh hơn
+	signal buttonClicked(index)
+	onButtonClicked: (index) => {}
+3. Hàm emplaceBack của QList
+	3.1 định nghĩa
+		- Hàm emplaceBack là một phương thức của các container trong C++ (và các wrapper của Qt như QList, QVector, v.v.) được giới thiệu từ C++11 trở đi. 
+		Trong ngữ cảnh của QList, emplaceBack được dùng để xây dựng (construct) một phần tử mới trực tiếp vào cuối của QList, 
+		thay vì tạo một đối tượng riêng rồi sao chép (copy) hoặc di chuyển (move) nó vào.
+	3.2 emplaceBack hoạt động như thế nào?
+		- append / push_back:Tạo một đối tượng T bên ngoài, Sau đó, sao chép (hoặc di chuyển nếu kiểu T có move constructor) đối tượng đó vào trong QList.
+		- emplaceBack: Phân bổ không gian tại cuối QList.Xây dựng (gọi hàm tạo) đối tượng T ngay tại chỗ đó, sử dụng các đối số bạn cung cấp.
+	3.3 Tại sao emplaceBack lại hữu ích
+		- Lợi ích chính của emplaceBack là về hiệu suất (performance), đặc biệt khi làm việc với các đối tượng phức tạp hoặc tốn kém để sao chép/di chuyển.
+		- Giảm số lần khởi tạo/hủy và sao chép/di chuyển:
+			+ Với append/push_back, đối tượng có thể được tạo ra (constructor), sau đó sao chép (copy constructor) hoặc di chuyển (move constructor), và cuối cùng đối tượng gốc bị hủy (destructor).
+			+ Với emplaceBack, chỉ có một lần gọi hàm tạo và không có hoạt động sao chép hoặc di chuyển dư thừa. Điều này giúp tiết kiệm thời gian CPU và tài nguyên.
+		- Tránh các đối tượng tạm thời (temporary objects): emplaceBack giúp tránh việc tạo ra các đối tượng tạm thời không cần thiết, làm cho mã nguồn hiệu quả hơn.
+4. Cách sử dụng macro QML_ELEMENT
+	- Định nghĩa 1 class trong C++, sau đó, thêm macro QML_ELEMENT
+	- import module trong file qml: tên module lấy trong phần qt6_add_qml_module
+		qt6_add_qml_module(myapp
+			URI: com.mycompany.qmlcomponents
+			VERSION: 1.0
+		) =====> tên module = URI + VERSION
+===============================C++ Knowledge==========================================================================
+
+
+
+
+
+===============================Clean Code Knowledge ==================================================================
+
+1. Khi sử dụng câu lệnh điều kiện, hạn chế dùng if else lồng nhau nhất có thể bằng cách return sớm 
+
+2. Cách viết hàm
+	- Nhỏ
+	- Chỉ làm 1 việc
+	- Tên dễ hiều
+	- Nên có ít đối số
+	- Tránh các tham số boolean
+3. Đặt tên biến của cùng 1 trường phải thống nhất trong toàn bộ app, Ví dụ: plannedTime - plandtime
+4. Đặt dấu "&" ở trước kiểu thay vì tên của biến tham chiếu: 
+	ví dụ: StatusInfo& mStatus;
+5. Đặt tên class con chứa hậu tố là tên của class cha
+	ví dụ: class MainFrame : public Frame
+6. HÀM
+	6.1 Nhỏ
+	6.2 Làm 1 việc
+	6.3 Không lặp lại chính bạn (DRY)
+		- DRY là gì? DRY là không lặp lại code: Khi viết đi viết lại 1 đoạn code, làm cùng 1 việc, ở nhiều nơi khác nhau, ta sẽ vi phạm nguyên tắc DRY
+		- Tại sao phải DRY?
+			- Dễ maintain: Nếu một đoạn logic được lặp lại 5 lần, và bạn cần thay đổi logic đó, bạn sẽ phải sửa ở 5 nơi. Điều này dễ dẫn đến việc quên sửa một chỗ nào đó,
+			gây ra lỗi hoặc sự không nhất quán. Với dry, bạn chỉ cần sửa 1 chỗ duy nhất
+			- Giảm lỗi: 
+				Ít code trùng lặp nghĩa là ít cơ hội hơn để mắc lỗi.
+				Nếu một lỗi xuất hiện trong một đoạn code đã được tái sử dụng, bạn chỉ cần sửa nó một lần duy nhất. Khi copy-paste code, bạn có thể vô tình đưa lỗi từ chỗ này sang chỗ khác.
+			- Dễ đọc hiểu hơn: 
+				+ Giúp người đọc dễ theo dõi luồng logic chính và ko bị phân tâm với những đoạn code tương tự
+			- Dễ mở rộng
+7. Trong QML, tránh các item lồng nhau nhiều không cần thiết 
+8 Trong QML, check null hoặc undefined thì nên viết rõ ràng 
+	Ví dụ: blockModel === null || blockModel === undefined
+9. Remove dead function, dead code
+======================================GIT=============================================================================================
+1. command to clear stash list: git stash clear
+
+
+
+===================================OTHER==============================================================================================
+1. AStyle code format?
+	1.1 AStyle code format là gì? AStyle (Artistic Style) là một công cụ định dạng và làm đẹp mã nguồn tự động.
+	Nó được thiết kế để chuẩn hóa phong cách viết code (coding style) cho nhiều ngôn ngữ lập trình khác nhau, giúp mã nguồn trở nên dễ đọc, nhất quán và dễ bảo trì hơn.
+	1.2 AStyle làm gì?
+		- Chỉnh thụt lề (indentation): Sửa lỗi thụt lề không đồng đều, áp dụng số lượng khoảng trắng hoặc tab nhất quán cho mỗi cấp độ thụt lề.
+		- Định dạng dấu ngoặc nhọn (braces): Điều chỉnh vị trí của dấu { và } theo các phong cách khác nhau (ví dụ: Allman, K&R, Whitesmiths, GNU, v.v.).
+		- Chèn/Xóa khoảng trắng (whitespace): Thêm hoặc xóa khoảng trắng thừa xung quanh các toán tử, dấu phẩy, v.v., để code gọn gàng hơn.
+		- Sắp xếp thứ tự một số phần tử: Một số tùy chọn có thể giúp sắp xếp các phần tử nhất định trong code.
+		- Chuyển đổi Tab sang Space hoặc ngược lại: Đảm bảo toàn bộ file chỉ sử dụng một loại thụt lề.
+	1.3 Các ngôn ngữ AStyle hỗ trợ: C, C++, Objective-C, C#, Java
+	1.4 Tại sao phải dùng AStyle: dễ đọc, dễ bảo trì.
+2. Phím tắt dùng để mở terminal nhanh trên ubuntu: Ctrl + Alt + T
+3. Câu lệnh để chạy AStyle lên các file trong thư mục của project: find "$DIR" -type f -name "*.cpp" -exec "$ASTYLE_RUN_FILE" -n --options="$ASTYLE_CONFIX" {} \;
+4. Cách setup google test trong qt
+
+5. Cách mã hóa và giải mã 1 metcm message
+6. Cách chạy 1 test bất kỳ trong test case google test qt
+	- Mở Project của bạn trong Qt Creator.
+	- Vào tab "Projects" (thường nằm ở thanh bên trái).
+	- Chọn "Run" dưới phần "Build & Run" cho cấu hình bạn đang sử dụng (ví dụ: Debug hoặc Release).
+	- Tìm mục "Arguments" (hoặc "Command line arguments") trong phần "Run Settings". Đây là nơi bạn sẽ thêm các đối số dòng lệnh cho chương trình kiểm thử của mình.
+	- Nhập --gtest_filter=TestCaseName.TestName vào ô "Arguments".
+	- Ví dụ: Nếu file test_class_A.cpp của bạn có TEST(MyClassTest, ConstructorTest), bạn sẽ nhập
+		--gtest_filter=MyClassTest.ConstructorTest
+
+
+==============================================================================================================================================
+
+
