@@ -48,42 +48,15 @@ Window {
                 color: "green"
                 width: 1
             }
-            Column {
-                id: listBookScreenColumn
-                anchors {
-                    fill: parent
-                    margins: 10
+
+            Loader {
+                anchors.fill: parent
+                sourceComponent: AllBookScreen {
+
                 }
-                spacing: 0
-
-                CustomLabel {
-                    id: listBookScreenTitle
-                    text: "Quản lý sách"
-                    labelPointSize: 13
-                }
-
-                Item {
-                    width: listBookScreenColumn.width
-                    height: 10
-                }
-
-                AppIndicator {id: indicator}
-
-                Item {
-                    width: listBookScreenColumn.width
-                    height: 10
-                }
-
-                MultiPageTable {
-                    width: listBookScreenColumn.width
-                    height: listBookScreenColumn.height - 10 * 2 - listBookScreenTitle.height - indicator.height
-                }
-
-
-
-
-
             }
+
+
         }
 
         Rectangle {

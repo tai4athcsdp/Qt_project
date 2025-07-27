@@ -21,6 +21,7 @@ qt_add_qml_module(appMyLibrary
         QML_FILES CustomLabel.qml
         QML_FILES AppIndicator.qml
         QML_FILES MultiPageTable.qml
+        QML_FILES AllBookScreen.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

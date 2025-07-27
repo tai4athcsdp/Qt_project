@@ -26,9 +26,28 @@ Rectangle {
         }
 
         ListView {
+            id: tableContent
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.preferredHeight: root.tableNameHeightRatio
+            Layout.preferredHeight: root.tableContentRatio
+            model: 1
+            delegate: Rectangle {
+                width: tableContent.width
+                height: tableContent.height
+                color: "red"
+                opacity: 0.3
+            }
+        }
+
+        Rectangle {
+            id: tableFooter
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredHeight: root.tableFooterRatio
+            border {
+                color: "red"
+                width: 1
+            }
         }
 
     }
